@@ -1,0 +1,21 @@
+{
+  "name": "TEST",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "test core"
+  ],
+  "author": {
+    "name": "zhizhunbao995@163.com",
+    "url": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zhizhunbao995/core.git"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "mime":"latest"
+  },
+  "scripts": {}
+}

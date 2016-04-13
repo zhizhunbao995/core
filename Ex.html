@@ -1,0 +1,74 @@
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+  var tplEngine = function(tpl, data) {
+    var reg = /\{\{(#)?(.*?)?\}\}/g,
+        regStart = /^(each)(.*)?/,
+        regEnd = /^\/(each)(.*)?/,
+        code = 'var r=[];\n',
+        cursor = 0,
+        eachCmd = false,
+        eachObj = {};
+    var add = function(line, js) {
+      if(js){
+        var cmdStart = line.match(regStart);
+        var cmdEnd = line.match(regEnd);
+        if (cmdStart) {
+          var exp = "for (var i = 0; i < "+cmdStart[2]+".length; i++) {debugger;"
+          eachCmd = true;
+          eachObj = cmdStart[2];
+          code += exp + '\n';
+        }
+        else if(cmdEnd){
+          code += "}" + '\n';
+          eachCmd = false,
+          eachObj = {};
+        }else{
+          if (eachCmd) {
+            line = eachObj+"[i]"+"[\""+line+"\"]"
+          }
+          code += 'r.push(' + line + ');\n'
+        }
+      }else{
+        code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : ''
+      }
+      return add;
+    }
+    while(match = reg.exec(tpl)) {
+        add(tpl.slice(cursor, match.index))(match[2], true);
+        cursor = match.index + match[0].length;
+    }
+    add(tpl.substr(cursor, tpl.length - cursor));
+    code += 'return r.join("");';
+    return new Function('data',"with(data){"+code+"}").apply(data,[data]);
+}
+var s = '<!DOCTYPE html>\
+<html>\
+  <div class="warp">\
+    <h1><!-- 目录结构 --></h1>\
+    <h2>{{catalogue}}</h2>\
+    <div class="list">\
+      <ul>\
+      {{#each files}}\
+        <li><a href="{{url}}" class="{{floder}}"><span>{{file}}</span></a></li>\
+      {{/each}}\
+    </ul>\
+    </div>\
+  </div>\
+</body>\
+</html>'
+var data = {catalogue:"xuan",      test:"test123123",files:[{
+      url:"xxx",
+      floder:"wenjianjia",
+      file:"wenjian"
+    }]
+  }
+
+console.log(tplEngine(s,data))
+</script>
+</html>
