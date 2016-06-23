@@ -1,7 +1,7 @@
 {
   "name": "TEST",
   "version": "0.0.1",
-  "description": "",
+  "description": "Tools",
   "keywords": [
     "test core"
   ],
@@ -17,5 +17,6 @@
   "dependencies": {
     "mime":"latest"
   },
-  "scripts": {}
+  "scripts": {},
+   "license": "MIT"
 }

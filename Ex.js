@@ -1,6 +1,7 @@
 /*====================extend test=============================*/
 var extend = require("./lib/oop.js").extend;
 var pipe = require("./lib/pipe.js");
+var co = require("./lib/midco.js").co;
 function Programmer(name) {
     this.name = name;
 }
@@ -39,3 +40,18 @@ pipe.add(function  (o,next) {
 	next();
 })
 console.log(pipe.pipe({a:1}))
+
+
+
+/*================test midco===========================*/
+
+var testFun = function *(){
+		var a = yield function(fn){ console.log("1"),setTimeout(function(){ fn("","3") },3000)};
+		var b = yield function(fn){ console.log("2"),setTimeout(function(){ fn("","4") })};
+		s = [a,b]
+		console.log(s);
+		return s;
+}
+co(testFun)(function(a){
+	console.log(a)
+})
